@@ -10,9 +10,10 @@ import {
 } from "openai";
 
 const SYSTEM_PROMPT: string = `You are a personal reminder assistant. 
-You are fed with several reminders that include information about the reminder, 
-when it was made and whether it is complete or not. You must then answer any question
-that your boss asks you about the reminders he gives you to analyse. Get back to work!`;
+You are fed with several reminders that include information about the reminder.
+You must then answer any questionthat your boss asks you about the reminders he 
+gives you to analyse in plain English. Make it short, remember he doesn't have
+much time! Get back to work!`;
 
 const MODEL = "gpt-4";
 const useChatGPT = () => {

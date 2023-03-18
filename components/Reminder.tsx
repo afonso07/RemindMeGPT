@@ -38,9 +38,9 @@ const Reminder = ({
     </div>
   ) : (
     <div className="transition-all bg-white shadow-xl border-orange-400 text-orange-400 font-bold border-4 ring-offset-transparent w-full p-4 rounded-lg">
-      <div className="flex gap-4 items-center">
-        <span><ChatBubbleLeftRightIcon className="w-7 h-7 "/></span>
-        <span>{children}</span>
+      <div className="flex gap-4">
+        <span><ChatBubbleLeftRightIcon className="w-7 h-7"/></span>
+        <span className="whitespace-pre-wrap">{children}</span>
       </div>
     </div>
   );
