@@ -101,7 +101,11 @@ const useChatGPT = () => {
     reminderList: ReminderWithID[],
     extra_prompt: string
   ): Promise<void> => {
-    const gptChats = reminderGPTInput(reminderList, extra_prompt);
+    const gptMessages = reminderGPTInput(reminderList);
+    //? Format the prompts
+    prompt_formatter(extra_prompt, gptMessages);
+
+    const gptChats = gptMessages;
     const completion = await openai.createChatCompletion({
       model: MODEL,
       messages: gptChats,
@@ -110,8 +114,8 @@ const useChatGPT = () => {
   };
 
   // const makeRequest = (formattedReminders:)
-  return () => {
-    console.log(makeChatRequest(reminderList));
+  return (extra_prompt: string) => {
+    console.log(makeChatRequest(reminderList, extra_prompt));
   };
 };
 

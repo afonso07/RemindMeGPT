@@ -8,8 +8,6 @@ import useChatGPT from "@/hooks/openAIHooks";
 const InputBox = () => {
   const dispatch = useAppDispatch();
 
-  const getReminders = useChatGPT();
-
   const [textAreaInput, setTextAreaInput] = useState("");
   const GPT_TRIGGER = "/ask";
   return (
@@ -28,13 +26,9 @@ const InputBox = () => {
       </div>
       <button
         className=""
-        onClick={async() => {
+        onClick={() => {
           if (textAreaInput) {
             dispatch(addReminder({ reminder: textAreaInput, complete: false }));
-            console.log('sending request')
-            getReminders()
-            console.log('sent')
-
           }
         }}
       >
