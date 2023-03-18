@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
-import { selectReminders } from "@/redux/slices/reminderSlice";
+import { addReminder, selectReminders } from "@/redux/slices/reminderSlice";
 import { ReminderWithID } from "@/custom_typings/reminderTypes";
 import { GPTChatInput, GPTRoles } from "@/custom_typings/gptTypes";
 import {
@@ -118,8 +118,17 @@ const useChatGPT = () => {
   };
 
   // const makeRequest = (formattedReminders:)
-  return (extra_prompt: string) => {
-    makeChatRequest(reminderList, extra_prompt);
+  return async (extra_prompt: string) => {
+    const chatResult = await makeChatRequest(reminderList, extra_prompt);
+    if (chatResult) {
+      dispatch(
+        addReminder({
+          reminder: chatResult.content,
+          complete: false,
+          is_agent: true,
+        })
+      );
+    }
   };
 };
 
