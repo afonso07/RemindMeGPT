@@ -18,7 +18,11 @@ export const reminderSlice = createSlice({
   reducers: {
     addReminder: (state, action: PayloadAction<Reminder>) => {
       const payload = action.payload;
-      const rID: ReminderWithID = { reminder: payload, id: uuidv4() };
+      const rID: ReminderWithID = {
+        reminder: payload,
+        id: uuidv4(),
+        timestamp: new Date().toLocaleString(),
+      };
       state.reminderHistory.push(rID);
     },
     setReminderStatus: (state, action: PayloadAction<ModifyReminder>) => {

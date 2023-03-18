@@ -8,11 +8,16 @@ const InputBox = () => {
   const dispatch = useAppDispatch();
 
   const [textAreaInput, setTextAreaInput] = useState("");
+  const GPT_TRIGGER = "/ask";
   return (
     <>
       <div className="shadow-xl border-black  w-full rounded-lg border-2 bg-white text-white max-h-56 overflow-auto">
         <TextareaAutosize
-          className="w-full h-full bg-transparent text-black p-4 outline-none resize-none -mb-1"
+          className={
+            textAreaInput.includes(GPT_TRIGGER)
+              ? "w-full h-full bg-transparent text-orange-600 p-4 outline-none resize-none -mb-1 font-bold"
+              : "w-full h-full bg-transparent text-black p-4 outline-none resize-none -mb-1"
+          }
           placeholder="Reminder"
           onChange={(e) => setTextAreaInput(e.target.value)}
           value={textAreaInput}

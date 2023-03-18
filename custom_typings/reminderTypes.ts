@@ -5,6 +5,7 @@ export interface Reminder {
 
 export interface ReminderWithID {
   reminder: Reminder;
+  timestamp: string;
   id: string;
 }
 
