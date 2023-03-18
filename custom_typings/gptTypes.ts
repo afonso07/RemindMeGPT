@@ -1,7 +1,7 @@
 export enum GPTRoles {
   SYS = "system",
   USER = "user",
-  ASS = "ass",
+  ASS = "assistant",
 }
 
 export interface GPTMessage {

@@ -10,7 +10,7 @@ You are fed with several reminders that include information about the reminder,
 when it was made and whether it is complete or not. You must then answer any question
 that your boss asks you about the reminders he gives you to analyse. Get back to work!`;
 
-const useChatGPT = async () => {
+const useChatGPT = () => {
   const configuration = new Configuration({
     organisation: process.env.NEXT_PUBLIC_ORG_ID,
     apiKey: process.env.OPENAI_API_KEY,
@@ -31,13 +31,14 @@ const useChatGPT = async () => {
     return formattedReminders;
   };
 
-  const reminderGPTInput = (reminders: ReminderWithID[]): Array<string> => {
+  //? Goes through all the reminders, and joins them up until an agent message is found
+  const reminderGPTInput = (reminders: ReminderWithID[]): GPTChatInput => {
     var tempReminderList: Array<ReminderWithID> = [];
     //? Initialise with initial prompt
     var gptInput: GPTChatInput = [
       { role: GPTRoles.SYS, content: SYSTEM_PROMPT },
     ];
-    var foundAgent = false;
+    var agentResponsePresent = false;
     reminders.forEach((reminderItem) => {
       if (!reminderItem.reminder.is_agent) {
         tempReminderList.push(reminderItem);
@@ -47,7 +48,11 @@ const useChatGPT = async () => {
           gptInput.push(
             {
               role: GPTRoles.USER,
-              content: reminderFormatter(tempReminderList).join(", "),
+              content: agentResponsePresent
+                ? `More reminders: ${reminderFormatter(tempReminderList).join(
+                    ", "
+                  )}`
+                : reminderFormatter(tempReminderList).join(", "),
             },
             { role: GPTRoles.ASS, content: reminderItem.reminder.reminder }
           );
@@ -58,14 +63,24 @@ const useChatGPT = async () => {
             content: reminderItem.reminder.reminder,
           });
         }
+        agentResponsePresent = true;
       }
     });
     //? Check if there are any reminders left back
+    if (tempReminderList.length != 0) {
+      gptInput.push({
+        role: GPTRoles.USER,
+        content: agentResponsePresent
+          ? `More reminders: ${reminderFormatter(tempReminderList).join(", ")}`
+          : reminderFormatter(tempReminderList).join(", "),
+      });
+    }
+    return gptInput;
   };
 
   // const makeRequest = (formattedReminders:)
   return () => {
-    console.log(reminderFormatter(reminderList));
+    console.log(reminderGPTInput(reminderList));
   };
 };
 
