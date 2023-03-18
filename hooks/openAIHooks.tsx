@@ -18,7 +18,7 @@ const useChatGPT = () => {
   //? OpenAI
   const configuration = new Configuration({
     organization: process.env.NEXT_PUBLIC_ORG_ID,
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -82,11 +82,36 @@ const useChatGPT = () => {
     return gptInput;
   };
 
-  const makeChatRequest = (chats: GPTChatInput) => {};
+  //? We need to add in the user's custom prompt in a formatted manner
+  //? Checks the last message in the list and generates a prompt accordingly
+  const prompt_formatter = (custom_prompt: string, chatInput: GPTChatInput) => {
+    if (chatInput[chatInput.length - 1].role != GPTRoles.USER) {
+      chatInput.push({ role: GPTRoles.USER, content: custom_prompt });
+    } else {
+      chatInput[
+        chatInput.length - 1
+      ].content = `Given the previous chat history and these additional reminders: ${
+        chatInput[chatInput.length - 1].content
+      }, ${custom_prompt}`;
+    }
+  };
+
+  //? User can pass an extra prompt
+  const makeChatRequest = async (
+    reminderList: ReminderWithID[],
+    extra_prompt: string
+  ): Promise<void> => {
+    const gptChats = reminderGPTInput(reminderList, extra_prompt);
+    const completion = await openai.createChatCompletion({
+      model: MODEL,
+      messages: gptChats,
+    });
+    console.log("Completion: ", completion.data.choices[0].message);
+  };
 
   // const makeRequest = (formattedReminders:)
   return () => {
-    console.log(reminderGPTInput(reminderList));
+    console.log(makeChatRequest(reminderList));
   };
 };
 

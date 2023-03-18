@@ -28,10 +28,13 @@ const InputBox = () => {
       </div>
       <button
         className=""
-        onClick={() => {
+        onClick={async() => {
           if (textAreaInput) {
             dispatch(addReminder({ reminder: textAreaInput, complete: false }));
+            console.log('sending request')
             getReminders()
+            console.log('sent')
+
           }
         }}
       >
