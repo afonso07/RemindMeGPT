@@ -3,7 +3,11 @@ import { useAppDispatch, useAppSelector } from "./reduxHooks";
 import { selectReminders } from "@/redux/slices/reminderSlice";
 import { ReminderWithID } from "@/custom_typings/reminderTypes";
 import { GPTChatInput, GPTRoles } from "@/custom_typings/gptTypes";
-import { Configuration, OpenAIApi } from "openai";
+import {
+  ChatCompletionResponseMessage,
+  Configuration,
+  OpenAIApi,
+} from "openai";
 
 const SYSTEM_PROMPT: string = `You are a personal reminder assistant. 
 You are fed with several reminders that include information about the reminder, 
@@ -100,7 +104,7 @@ const useChatGPT = () => {
   const makeChatRequest = async (
     reminderList: ReminderWithID[],
     extra_prompt: string
-  ): Promise<void> => {
+  ): Promise<ChatCompletionResponseMessage | undefined> => {
     const gptMessages = reminderGPTInput(reminderList);
     //? Format the prompts
     prompt_formatter(extra_prompt, gptMessages);
@@ -110,12 +114,12 @@ const useChatGPT = () => {
       model: MODEL,
       messages: gptChats,
     });
-    console.log("Completion: ", completion.data.choices[0].message);
+    return completion.data.choices[0].message;
   };
 
   // const makeRequest = (formattedReminders:)
   return (extra_prompt: string) => {
-    console.log(makeChatRequest(reminderList, extra_prompt));
+    makeChatRequest(reminderList, extra_prompt);
   };
 };
 

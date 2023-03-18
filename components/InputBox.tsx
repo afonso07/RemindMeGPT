@@ -5,11 +5,25 @@ import { useAppDispatch } from "@/hooks/reduxHooks";
 import { addReminder } from "@/redux/slices/reminderSlice";
 import useChatGPT from "@/hooks/openAIHooks";
 
+const GPT_TRIGGER = "/ask";
+const ASK_REGEX = /(?<=^\/ask ).*/gi;
+
 const InputBox = () => {
   const dispatch = useAppDispatch();
 
+  const sendChatToGPT = useChatGPT();
+
   const [textAreaInput, setTextAreaInput] = useState("");
-  const GPT_TRIGGER = "/ask";
+
+  //? gets everything after the ask - regex
+  const getAskPrompt = (prompt: string): string | null => {
+    const matches = prompt.match(ASK_REGEX);
+    if (matches?.length) {
+      return matches[0];
+    } else {
+      return null;
+    }
+  };
   return (
     <>
       <div className="shadow-xl border-black  w-full rounded-lg border-2 bg-white text-white max-h-56 overflow-auto">
@@ -28,6 +42,9 @@ const InputBox = () => {
         className=""
         onClick={() => {
           if (textAreaInput) {
+            if (textAreaInput.includes(GPT_TRIGGER)) {
+              console.log(getAskPrompt(textAreaInput));
+            }
             dispatch(addReminder({ reminder: textAreaInput, complete: false }));
           }
         }}
