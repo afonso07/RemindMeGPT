@@ -21,10 +21,10 @@ const Reminder = ({
 
   return !gpt_interface.is_agent ? (
     gpt_interface.is_question ? (
-      <div className="transition-all bg-white shadow-xl border-orange-400 text-orange-400 font-bold border-4 ring-offset-transparent w-full p-4 rounded-lg">
+      <div className="transition-all bg-white shadow-xl border-blue-400 text-blue-400 font-bold border-4 ring-offset-transparent w-full p-4 rounded-lg">
         <div className="flex gap-4">
           <span>
-            <ChatBubbleLeftRightIcon className="w-7 h-7" />
+            <QuestionMarkCircleIcon className="w-7 h-7" />
           </span>
           <span className="whitespace-pre-wrap">{children}</span>
         </div>
