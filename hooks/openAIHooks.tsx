@@ -1,21 +1,25 @@
 import React from "react";
-import { useAppSelector } from "./reduxHooks";
+import { useAppDispatch, useAppSelector } from "./reduxHooks";
 import { selectReminders } from "@/redux/slices/reminderSlice";
 import { ReminderWithID } from "@/custom_typings/reminderTypes";
 import { GPTChatInput, GPTRoles } from "@/custom_typings/gptTypes";
-const { Configuration, OpenAIApi } = require("openai");
+import { Configuration, OpenAIApi } from "openai";
 
 const SYSTEM_PROMPT: string = `You are a personal reminder assistant. 
 You are fed with several reminders that include information about the reminder, 
 when it was made and whether it is complete or not. You must then answer any question
 that your boss asks you about the reminders he gives you to analyse. Get back to work!`;
 
+const MODEL = "gpt-4";
 const useChatGPT = () => {
+  const reminderList = useAppSelector(selectReminders);
+  const dispatch = useAppDispatch();
+
+  //? OpenAI
   const configuration = new Configuration({
-    organisation: process.env.NEXT_PUBLIC_ORG_ID,
+    organization: process.env.NEXT_PUBLIC_ORG_ID,
     apiKey: process.env.OPENAI_API_KEY,
   });
-  const reminderList = useAppSelector(selectReminders);
   const openai = new OpenAIApi(configuration);
 
   const reminderFormatter = (
@@ -77,6 +81,8 @@ const useChatGPT = () => {
     }
     return gptInput;
   };
+
+  const makeChatRequest = (chats: GPTChatInput) => {};
 
   // const makeRequest = (formattedReminders:)
   return () => {
