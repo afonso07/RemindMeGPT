@@ -1,7 +1,12 @@
+export interface GPTInterface {
+  is_question?: boolean;
+  is_agent?: boolean;
+}
+
 export interface Reminder {
   reminder: string;
   complete: boolean;
-  is_agent?: boolean;
+  gptinterface?: GPTInterface;
 }
 
 export interface ReminderWithID {

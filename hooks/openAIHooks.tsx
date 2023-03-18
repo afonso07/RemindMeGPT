@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./reduxHooks";
-import { addReminder, selectReminders } from "@/redux/slices/reminderSlice";
+import { addReminders, selectReminders } from "@/redux/slices/reminderSlice";
 import { ReminderWithID } from "@/custom_typings/reminderTypes";
 import { GPTChatInput, GPTRoles } from "@/custom_typings/gptTypes";
 import {
@@ -33,10 +33,15 @@ const useChatGPT = () => {
     if (reminders.length == 0) {
       return [];
     }
-    const formattedReminders: Array<string> = reminders.map(
-      (reminder) =>
-        `Reminder: ${reminder.reminder.reminder} recorded on: ${reminder.timestamp} and is complete? ${reminder.reminder.complete}`
-    );
+
+    //? Filter out for every question
+    const formattedReminders: Array<string> = reminders
+      .filter((reminder) => !reminder.reminder.gptinterface?.is_question)
+      .map(
+        (reminder) =>
+          `Reminder: ${reminder.reminder.reminder} recorded on: ${reminder.timestamp} and is complete? ${reminder.reminder.complete}`
+      );
+    console.log({ formattedReminders });
     return formattedReminders;
   };
 
@@ -49,7 +54,7 @@ const useChatGPT = () => {
     ];
     var agentResponsePresent = false;
     reminders.forEach((reminderItem) => {
-      if (!reminderItem.reminder.is_agent) {
+      if (!reminderItem.reminder.gptinterface?.is_agent) {
         tempReminderList.push(reminderItem);
       } else {
         //? if an agent is encountered, collate all the previous reminders
@@ -123,11 +128,20 @@ const useChatGPT = () => {
     const chatResult = await makeChatRequest(reminderList, extra_prompt);
     if (chatResult) {
       dispatch(
-        addReminder({
-          reminder: chatResult.content,
-          complete: false,
-          is_agent: true,
-        })
+        addReminders([
+          {
+            reminder: extra_prompt,
+            complete: false,
+            gptinterface: { is_question: true },
+          },
+          {
+            reminder: chatResult.content,
+            complete: false,
+            gptinterface: {
+              is_agent: true,
+            },
+          },
+        ])
       );
     }
   };

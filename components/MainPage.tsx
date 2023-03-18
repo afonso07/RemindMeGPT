@@ -13,7 +13,7 @@ const ReminderHistory = () => {
         <Reminder
           key={reminder.id}
           id={reminder.id}
-          is_agent={reminder.reminder.is_agent}
+          gpt_interface={reminder.reminder.gptinterface}
           completed={reminder.reminder.complete}
         >
           {reminder.reminder.reminder}

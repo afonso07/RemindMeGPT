@@ -26,6 +26,23 @@ const InputBox = () => {
       return null;
     }
   };
+
+  const handleSubmit = async () => {
+    if (textAreaInput) {
+      if (textAreaInput.includes(GPT_TRIGGER)) {
+        const chatPrompt = getAskPrompt(textAreaInput);
+        if (chatPrompt) {
+          setLoading(true);
+          await sendChatToGPT(chatPrompt);
+          setLoading(false);
+        }
+      } else {
+        dispatch(addReminder({ reminder: textAreaInput, complete: false }));
+      }
+      setTextAreaInput("");
+    }
+  };
+
   return (
     <>
       <div className="shadow-xl border-black  w-full rounded-lg border-2 bg-white text-white max-h-56 overflow-auto">
@@ -39,6 +56,12 @@ const InputBox = () => {
             placeholder="Reminder"
             onChange={(e) => setTextAreaInput(e.target.value)}
             value={textAreaInput}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
           />
         ) : (
           <div className="flex justify-center p-4 h-full w-full">
@@ -46,25 +69,7 @@ const InputBox = () => {
           </div>
         )}
       </div>
-      <button
-        className=""
-        onClick={async () => {
-          if (textAreaInput) {
-            if (textAreaInput.includes(GPT_TRIGGER)) {
-              const chatPrompt = getAskPrompt(textAreaInput);
-              if (chatPrompt) {
-                setLoading(true);
-                await sendChatToGPT(chatPrompt);
-                setLoading(false);
-              }
-            } else {
-              dispatch(
-                addReminder({ reminder: textAreaInput, complete: false })
-              );
-            }
-          }
-        }}
-      >
+      <button className="" onClick={handleSubmit}>
         <ArrowUpIcon className="h-8 w-8 text-black hover:scale-110" />
       </button>
     </>

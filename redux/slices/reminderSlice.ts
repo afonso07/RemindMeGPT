@@ -25,6 +25,17 @@ export const reminderSlice = createSlice({
       };
       state.reminderHistory.push(rID);
     },
+    addReminders: (state, action: PayloadAction<Array<Reminder>>) => {
+      const payload = action.payload;
+      payload.forEach((reminder) => {
+        var rID: ReminderWithID = {
+          reminder: reminder,
+          id: uuidv4(),
+          timestamp: new Date().toLocaleString(),
+        };
+        state.reminderHistory.push(rID);
+      });
+    },
     setReminderStatus: (state, action: PayloadAction<ModifyReminder>) => {
       const reminder = action.payload;
       var objIndex = state.reminderHistory.findIndex(
@@ -35,7 +46,7 @@ export const reminderSlice = createSlice({
   },
 });
 
-export const { addReminder, setReminderStatus } = reminderSlice.actions;
+export const { addReminder, setReminderStatus, addReminders } = reminderSlice.actions;
 export const selectReminders = (state: RootState) =>
   state.reminders.reminderHistory;
 export default reminderSlice.reducer;
