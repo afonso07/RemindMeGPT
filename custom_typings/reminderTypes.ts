@@ -1,6 +1,7 @@
 export interface Reminder {
   reminder: string;
   complete: boolean;
+  is_agent?: boolean;
 }
 
 export interface ReminderWithID {

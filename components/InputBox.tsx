@@ -3,9 +3,12 @@ import TextareaAutosize from "react-textarea-autosize";
 import { ArrowUpIcon } from "@heroicons/react/24/solid";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { addReminder } from "@/redux/slices/reminderSlice";
+import useChatGPT from "@/hooks/openAIHooks";
 
 const InputBox = () => {
   const dispatch = useAppDispatch();
+
+  const getReminders = useChatGPT();
 
   const [textAreaInput, setTextAreaInput] = useState("");
   const GPT_TRIGGER = "/ask";
@@ -28,6 +31,7 @@ const InputBox = () => {
         onClick={() => {
           if (textAreaInput) {
             dispatch(addReminder({ reminder: textAreaInput, complete: false }));
+            getReminders()
           }
         }}
       >
