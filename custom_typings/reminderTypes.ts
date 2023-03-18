@@ -1,15 +1,15 @@
 export interface Reminder {
-  reminder: String;
+  reminder: string;
   complete: boolean;
 }
 
 export interface ReminderWithID {
   reminder: Reminder;
-  id: String;
+  id: string;
 }
 
 export interface ModifyReminder {
-  reminderID: String;
+  reminderID: string;
   complete: boolean;
 }
 

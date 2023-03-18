@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       colors: {
         fintime: "#FEF1E5",
+        ftext: "#23201F"
       },
     },
   },
