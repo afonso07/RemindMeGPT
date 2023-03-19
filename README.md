@@ -27,9 +27,8 @@ This PoC uses the following stack:
 
 ### Usage
 - All text written in the text area at the bottom is set as a reminder if they are not prefixed with a `/ask`.
-<br/>
+
 - Reminders can be switched between completed and uncompleted by clicking them. 
-<br/>
 - Any question can be asked to GPT be it about the reminders (as these are also sent though) or anything else. 
 
 ### Implementation
@@ -55,7 +54,7 @@ These bundled reminders are then slotted into a dictionary with different prompt
 {role:'user', content: 'Reminder: <REMINDER CONTENTS> recorded on: <REMINDER TIMESTAMP> and is complete? <COMPLETE STATUS>, ...'}
 ```
 2. In that after a set of reminders there is an agent response, that is then followed by more reminders. The first set of reminders are bundled up in the same way described in the previous point. But the next set of reminders are prefixed with `More reminders` before being added to the dictionary. 
-<br/>
+
 3. If the user asks a question and the last entry into the reminder history is a reminder, then every reminder from a previous agent response (if any) up to the last reminder is bundled up in the same format described in point (1) but prefixed with `Given the previous chat history and these additional reminders: ` which is postfixed with the user's question.
 
 #### Question formatting
@@ -77,10 +76,8 @@ However, the content will get prefixed with reminders if there exists reminders 
 These reminders are then put into the `message` section of the dictionary sent to the OpenAI GPT-4 Chat API. 
 
 3. The text area automatically resizes depending on user input
-<br/>
 
 4. The user's questions are included into the reminder history in blue. ![#1589F0](https://placehold.co/15x15/1589F0/1589F0.png)
-<br/>
 
 5. ChatGPT-4 responses are formatted in orange.  ![#f7923c](https://placehold.co/15x15/f7923c/f7923c.png)
 
