@@ -87,8 +87,9 @@ These reminders are then put into the `message` section of the dictionary sent t
 ## 🚫 Limitations
 - This is only a PoC and is not intended for production use. In production a backend should be made holding all of the interactions that happen between the user and the Open AI API.
 <br/>
+
 - GPT-4's `8,192` token context limitation, this is approximately 60 words, which can limit how many reminders are sent through with the user's question. 
-<br/>
+
   - A work around would be to use [LlamaIndex's](https://gpt-index.readthedocs.io/en/latest/index.html) [Vector Store Index](https://gpt-index.readthedocs.io/en/latest/guides/index_guide.html#vector-store-index) to determine the most relevant reminders to send through using Cosine-Similarity. 
 
 ## 👉💻 Example usage
