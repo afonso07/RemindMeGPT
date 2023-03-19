@@ -6,7 +6,6 @@ import { selectReminders } from "@/redux/slices/reminderSlice";
 
 const ReminderHistory = () => {
   const reminderList = useAppSelector(selectReminders);
-  console.log("RENDERS");
   return (
     <div className="w-full flex flex-col gap-4 items-center max-h-full p-4 ">
       {reminderList.map((reminder) => (
