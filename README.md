@@ -3,6 +3,7 @@
     <img src="public/rmg.gif" alt="animated" />
 </p>
 This is a simple reminder app proof-of-concept developed with **GPT-4**. Here users can create reminders, change their status and ask ChatGPT about them. For example, the user could ask chat gpt to:
+
 - `Please summarise all my reminders in a simple and comprehensive way whilst giving me advice on how to complete them`
 - `What reminders do I have today?`
 - `Can you tell me something about Luís de Camões`
