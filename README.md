@@ -2,13 +2,19 @@
 <p align="center">
     <img src="public/rmg.gif" alt="animated" />
 </p>
-This is a simple reminder app proof-of-concept developed with **GPT-4**. Here users can create reminders, change their status and ask ChatGPT about them. For example, the user could ask chat gpt to:
+
+This is a simple reminder app proof-of-concept developed with **GPT-4**. Here users can create reminders, change their statusus and ask ChatGPT about them. For example, the user could ask chat GPT to:
 
 - `Please summarise all my reminders in a simple and comprehensive way whilst giving me advice on how to complete them`
 - `What reminders do I have today?`
 - `Can you tell me something about Luís de Camões`
 
 ## 🏃 Running RemindMeGPT
+An environment file needs to be created in the project root called `.env.local` that includes the following env variables:
+```
+NEXT_PUBLIC_OPENAI_API_KEY=<API_KEY_GOES_HERE>
+NEXT_PUBLIC_ORG_ID=<ORG_ID_GOES_HERE>
+```
 To run this project run the following commands:
 ```bash
 npm install
@@ -27,16 +33,15 @@ This PoC uses the following stack:
 
 ### Usage
 - All text written in the text area at the bottom is set as a reminder if they are not prefixed with a `/ask`.
-
 - Reminders can be switched between completed and uncompleted by clicking them. 
-- Any question can be asked to GPT be it about the reminders (as these are also sent though) or anything else. 
+- Any question can be asked to GPT, be it about the reminders (as these are also sent though) or anything else. 
 
 ### Implementation
 
 #### System prompt
 There is a system prompt that is always sent along with the chat dictionary in every request. This is set within the `openAIHooks` and currently holds the current prompt:
-```You are a personal reminder assistant. 
-You are fed with several reminders that include information about the reminder.
+```
+You are a personal reminder assistant. You are fed with several reminders that include information about the reminder.
 You must then answer any question that your boss asks you about the reminders he 
 gives you to analyse in plain English. Make it short, remember he doesn't have
 much time! Get back to work!
@@ -53,7 +58,7 @@ These bundled reminders are then slotted into a dictionary with different prompt
 ```javascript
 {role:'user', content: 'Reminder: <REMINDER CONTENTS> recorded on: <REMINDER TIMESTAMP> and is complete? <COMPLETE STATUS>, ...'}
 ```
-2. In that after a set of reminders there is an agent response, that is then followed by more reminders. The first set of reminders are bundled up in the same way described in the previous point. But the next set of reminders are prefixed with `More reminders` before being added to the dictionary. 
+2. If after a set of reminders there is an agent response, that is then followed by more reminders, then first set of reminders are bundled up in the same way described in the previous point. But the next set of reminders are prefixed with `More reminders` before being added to the dictionary. 
 
 3. If the user asks a question and the last entry into the reminder history is a reminder, then every reminder from a previous agent response (if any) up to the last reminder is bundled up in the same format described in point (1) but prefixed with `Given the previous chat history and these additional reminders: ` which is postfixed with the user's question.
 
@@ -71,22 +76,22 @@ However, the content will get prefixed with reminders if there exists reminders 
 ```
  > This was done to allow the system to preserve contextual history. 
 
-2. The blue boxes that are displayed to the user displaying the asked question is not sent along within the API request. 
+2. The blue boxes that are displayed to the user showing the asked question is not sent along within the API request. 
 
-These reminders are then put into the `message` section of the dictionary sent to the OpenAI GPT-4 Chat API. 
+3. These reminders are then put into the `message` section of the dictionary sent to the OpenAI GPT-4 Chat API. 
 
-3. The text area automatically resizes depending on user input
+4. The text area automatically resizes depending on user input
 
-4. The user's questions are included into the reminder history in blue. ![#1589F0](https://placehold.co/15x15/1589F0/1589F0.png)
+5. The user's questions are included into the reminder history in blue. ![#1589F0](https://placehold.co/15x15/1589F0/1589F0.png)
 
-5. ChatGPT-4 responses are formatted in orange.  ![#f7923c](https://placehold.co/15x15/f7923c/f7923c.png)
+6. ChatGPT-4 responses are formatted in orange.  ![#f7923c](https://placehold.co/15x15/f7923c/f7923c.png)
 
 ## 🚫 Limitations
-- This is only a PoC and is not intended for production use. In production a backend should be made holding all of the interactions that happen between the user and the Open AI API.
+- This is only a PoC and is not intended for production use. In production a backend should be made holding all the interactions that happen between the user and the Open AI API.
 
 - GPT-4's `8,192` token context limitation, this is approximately 60 words, which can limit how many reminders are sent through with the user's question. 
 
-  - A work around would be to use [LlamaIndex's](https://gpt-index.readthedocs.io/en/latest/index.html) [Vector Store Index](https://gpt-index.readthedocs.io/en/latest/guides/index_guide.html#vector-store-index) to determine the most relevant reminders to send through using Cosine-Similarity. 
+  - A workaround would be to use [LlamaIndex's](https://gpt-index.readthedocs.io/en/latest/index.html) [Vector Store Index](https://gpt-index.readthedocs.io/en/latest/guides/index_guide.html#vector-store-index) to determine the most relevant reminders to send through using Cosine-Similarity. 
 
 ## 👉💻 Example usage
 For a higher quality walkthrough use this [video](https://www.youtube.com/watch?v=LTZo8bf_YnM).
