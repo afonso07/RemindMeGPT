@@ -94,6 +94,6 @@ However, the content will get prefixed with reminders if there exists reminders 
   - A workaround would be to use [LlamaIndex's](https://gpt-index.readthedocs.io/en/latest/index.html) [Vector Store Index](https://gpt-index.readthedocs.io/en/latest/guides/index_guide.html#vector-store-index) to determine the most relevant reminders to send through using Cosine-Similarity. 
 
 ## 👉💻 Example usage
-For a higher quality walkthrough use this [video](https://www.youtube.com/watch?v=LTZo8bf_YnM).
+For a higher quality walkthrough use this [video](https://www.youtube.com/watch?v=lIp0EV68jAg).
 
 
